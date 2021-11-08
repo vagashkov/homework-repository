@@ -1,7 +1,8 @@
 from typing import List
 
 
-def check_sum_of_four(a: List[int], b: List[int], c: List[int], d: List[int]) -> int:
+def check_sum_of_four(a: List[int], b: List[int], /
+c: List[int], d: List[int]) -> int:
     # trying to explore all the
     # posible combinations
     # among four lists
