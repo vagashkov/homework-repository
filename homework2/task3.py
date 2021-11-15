@@ -11,18 +11,11 @@ assert combinations([1, 2], [3, 4]) == [
     [2, 4],
 ]
 """
+import itertools
 from typing import Any, List
 
 
 def combinations(*args: List[Any]) -> List[List]:
-    lists_list = list(args)
-    res_list = []
-    # getting all the possible combinations
-    for list_i in lists_list:
-        for list_j in lists_list:
-            if not (list_i is list_j):
-                for item_i in list_i:
-                    for item_j in list_j:
-                        if not (item_i is item_j):
-                            res_list.append([item_i, item_j])
-    return res_list[:int(len(res_list)/2)]
+    tuples_list = list(itertools.product(*args))
+    res_list = [list(x) for x in tuples_list]
+    return res_list
