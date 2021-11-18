@@ -1,4 +1,5 @@
 from io import StringIO
+
 from _pytest.monkeypatch import MonkeyPatch
 
 from homework3.task1 import timed_lru_cache
