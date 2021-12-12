@@ -20,7 +20,9 @@ class Company:
         self.pe_ratio = 0
 
 
+# list with all the company objects
 allCompanies = []
+# base url to retrieve data
 base_url = "https://markets.businessinsider.com"
 
 
@@ -87,7 +89,7 @@ def build_companies_list(base_url: str):
 
 
 async def fetch_details(company_object, session):
-    """ function to fill company objects with all
+    """ async function to fill company objects with all
     necessary info from company pages"""
     try:
         async with session.get(base_url + company_object.link) as response:
