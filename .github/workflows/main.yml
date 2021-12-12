@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Run script
         run: |
-          pip install flake8 isort pytest aiohttp asyncio bs4
+          pip install flake8 isort pytest aiohttp bs4
           ls -la
           flake8 .
           isort --check .
