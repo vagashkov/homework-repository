@@ -9,14 +9,17 @@ from typing import Sequence
 
 
 def gen_fibonacci(start: int):
-    """ function builds Fibonacci sequence
-    using parameter as a lower margin """
-    i = 0
-    j = 1
+    """ generator function builds Fibonacci
+    sequence using parameter as a lower margin """
+    prev_el = 0
+    next_el = 1
     while True:
-        if i >= start:
-            yield i
-        i, j = j, i+j
+        # return current element only if it is
+        # equal or greater than starting point
+        if prev_el >= start:
+            yield prev_el
+        # and move further in any case
+        prev_el, next_el = next_el, prev_el + next_el
 
 
 def check_fibonacci(data: Sequence[int]) -> bool:
