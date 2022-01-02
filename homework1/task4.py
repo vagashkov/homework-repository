@@ -20,12 +20,9 @@ def check_sum_of_four(
     # among four lists using itertools.product
     # function
     counter = 0
-    for (item_a,
-            item_b,
-            item_c,
-            item_d) in product(a, b, c, d):
+    for list_elements in product(a, b, c, d):
         # checking if sum of elements is equal to 0
-        if item_a + item_b + item_c + item_d == 0:
+        if sum(list_elements) == 0:
             # and increment counter if necessary
             counter = counter + 1
     return counter
