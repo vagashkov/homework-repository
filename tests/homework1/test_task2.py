@@ -1,25 +1,8 @@
+import pytest
+
 from homework1.task2 import check_fibonacci
 
-
-def test_too_short_sequence():
-    """Testing that sequence less than 3 gives values log False"""
-    assert not check_fibonacci([1, 2])
-
-
-def test_non_int_sequence():
-    """Testing that sequence with non-integer values gives False"""
-    assert not check_fibonacci([0, 1, 1, "c", 3, 5])
-
-
-def test_negative_sequence():
-    """Testing that sequence with negative integer values gives False"""
-    assert not check_fibonacci([0, 1, 1, -2, 3, 5])
-
-
-def test_normal_sequence():
-    """Testing that fibonacci aequence gives True"""
-    assert check_fibonacci(
-        [
+zero_based_seq = [
             0,
             1,
             1,
@@ -42,91 +25,8 @@ def test_normal_sequence():
             4181,
             6765,
         ]
-    )
 
-
-def test_looong_sequence():
-    """Testing that real long sequence True"""
-    assert check_fibonacci(
-        [
-            1,
-            1,
-            2,
-            3,
-            5,
-            8,
-            13,
-            21,
-            34,
-            55,
-            89,
-            144,
-            233,
-            377,
-            610,
-            987,
-            1597,
-            2584,
-            4181,
-            6765,
-            10946,
-            17711,
-            28657,
-            46368,
-            75025,
-            121393,
-            196418,
-            317811,
-            514229,
-            832040,
-            1346269,
-            2178309,
-            3524578,
-            5702887,
-            9227465,
-            14930352,
-            24157817,
-            39088169,
-            63245986,
-            102334155,
-            165580141,
-            267914296,
-            433494437,
-            701408733,
-            1134903170,
-            1836311903,
-            2971215073,
-            4807526976,
-            7778742049,
-            12586269025,
-            20365011074,
-            32951280099,
-            53316291173,
-            86267571272,
-            139583862445,
-            225851433717,
-            365435296162,
-            591286729879,
-            956722026041,
-            1548008755920,
-            2504730781961,
-            4052739537881,
-            6557470319842,
-            10610209857723,
-            17167680177565,
-            27777890035288,
-            44945570212853,
-            72723460248141,
-            117669030460994,
-            190392490709135,
-            308061521170129,
-            498454011879264,
-            806515533049393,
-            1304969544928657,
-            2111485077978050,
-            3416454622906707,
-            5527939700884757,
-            8944394323791464,
+non_zero_based_seq = [
             14472334024676221,
             23416728348467685,
             37889062373143906,
@@ -150,4 +50,23 @@ def test_looong_sequence():
             218922995834555169026,
             354224848179261915075,
         ]
-    )
+
+test_data = [
+    # False: too short sequence
+    ([1, 2], False),
+    # False: non-integer found in sequence
+    ([0, 1, 1, "c", 3, 5], False),
+    # False: negative int found in sequence
+    ([0, 1, 1, -2, 3, 5], False),
+    # True: first Fibonacci sequence sample
+    # (zero-based)
+    (zero_based_seq, True),
+    # True: second Fibonacci sequence sample
+    # (non-zero-based)
+    (non_zero_based_seq, True)]
+
+
+@pytest.mark.parametrize("sequence, expected", test_data)
+def test_check_fibonacci(sequence, expected):
+    """Testing all the prepared sequences"""
+    assert check_fibonacci(sequence) == expected

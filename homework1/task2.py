@@ -8,6 +8,17 @@ We guarantee, that the given sequence contain >= 0 integers inside.
 from typing import Sequence
 
 
+def gen_fibonacci(start: int):
+    """ function builds Fibonacci sequence
+    using parameter as a lower margin """
+    i = 0
+    j = 1
+    while True:
+        if i >= start:
+            yield i
+        i, j = j, i+j
+
+
 def check_fibonacci(data: Sequence[int]) -> bool:
     # precheck: Fibonacci sequence can contain
     # only positive integer or zero
@@ -21,15 +32,12 @@ def check_fibonacci(data: Sequence[int]) -> bool:
     # seq is too short
     if len(data) < 3:
         return False
-    # now browse throunh the sequence
-    while len(data) > 2:
-        # getting it's 'head'
-        a, b, c = data[0], data[1], data[2]
-        # check the condition
-        if a + b != c:
+    # now browse throgh both sequences -
+    # that we are checking and that we just built,
+    # comparint it element by element
+    for data_member, fib_member in zip(data,
+                                       gen_fibonacci(data[0])):
+        if data_member != fib_member:
             return False
-        # .. and move forward if it was fullfilled
-        else:
-            data = data[1:]
     # we checked all the sequence and it is fine
     return True
