@@ -49,10 +49,11 @@ def get_rarest_char(file_path: str, encoding="utf-8") -> str:
                 # already known character
                 else:
                     res_dict[char] += 1
-    # and returning results
-    for key in res_dict.keys():
-        if res_dict[key] == sorted(list(res_dict.values()))[0]:
-            return key
+    # sort dict (as of since Python 3.7 and later dicts are stored
+    # as ordered collections) by item values
+    res_dict = dict(sorted(res_dict.items(), key=lambda item: item[1]))
+    # and return first key ( = the rarest char)
+    return list(res_dict)[0]
 
 
 def count_punctuation_chars(file_path: str,
