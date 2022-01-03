@@ -107,11 +107,8 @@ def get_most_common_non_ascii_char(file_path: str,
                     # already known
                     else:
                         res_dict[char] += 1
-    # getting the leader
-    top_count = sorted(list(res_dict.values()))[-1]
-    # and returning it
-    for key in res_dict.keys():
-        if res_dict[key] == top_count:
-            return key
-    # and returning results
-    return top_char
+    # sort dict (as of since Python 3.7 and later dicts are stored
+    # as ordered collections) by item values
+    res_dict = dict(sorted(res_dict.items(), key=lambda item: item[1]))
+    # and return last key ( = the most common char)
+    return list(res_dict)[-1]
