@@ -14,10 +14,9 @@ assert = custom_range(string.ascii_lowercase, 'p', 'g', -2) ==
 
 
 def custom_range(some_iterable, *args):
-    # getting the iterator object from iterable
-    some_iterator = iter(some_iterable)
-    # getting all the values from iterator
-    source_list = [x for x in some_iterator]
+    # transfming iterable into sequence
+    # in order to use slicing
+    source_list = list(some_iterable)
     res_list = []
     # right bound-based range
     if len(args) == 1:
