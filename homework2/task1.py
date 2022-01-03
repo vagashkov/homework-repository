@@ -92,7 +92,6 @@ def get_most_common_non_ascii_char(file_path: str,
                                    encoding="utf-8") -> str:
     """ Find most common non ascii char for document """
     res_dict = {}
-    top_char = ""
     # trying to open file
     with open(os.getcwd() + file_path) as fi:
         # and walking it line by line
