@@ -16,17 +16,21 @@ from typing import List, Tuple
 
 def major_and_minor_elem(inp: List) -> Tuple[int, int]:
     # setting up initial values
-    most = 0
-    least = 0
-    data = {}
+    most_elem = None
+    least_elem = None
+    most_count = 0
+    least_count = len(inp)
 
     # calculating number of occasions for all unique elements
     for item in set(inp):
-        data[item] = inp.count(item)
-    # now getting the least and most common element
-    for key in data.keys():
-        if data[key] == sorted(list(data.values()))[0]:
-            least = key
-        if data[key] == sorted(list(data.values()))[-1]:
-            most = key
-    return(most, least)
+        # getting number of occasions for current item
+        item_count = inp.count(item)
+        # new leader detected
+        if item_count > most_count:
+            most_elem = item
+            most_count = item_count
+        # new "looser"
+        if item_count < least_count:
+            least_elem = item
+            least_count = item_count
+    return(most_elem, least_elem)
