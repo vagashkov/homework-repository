@@ -18,6 +18,7 @@ def custom_range(some_iterable, *args):
     # in order to use slicing
     source_list = list(some_iterable)
     res_list = []
+    # parsing different args combinations:
     # right bound-based range
     if len(args) == 1:
         return source_list[:source_list.index(args[0])]
