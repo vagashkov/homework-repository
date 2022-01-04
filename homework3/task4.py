@@ -18,7 +18,3 @@ is Armstrong number in functionaly style:
 def is_armstrong(number: int) -> bool:
     return True if sum([int(x)**len(str(number))
                         for x in str(number)]) == number else False
-
-
-def count_armstrong(number: int):
-    return sum([int(x)**len(str(number)) for x in str(number)])
