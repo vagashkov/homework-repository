@@ -1,5 +1,6 @@
 from homework3.task1 import timed_lru_cache
 
+
 def test_timed_lru_cache():
     # counter for chached function calls
     f_invoked = 0
