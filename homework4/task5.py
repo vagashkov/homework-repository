@@ -13,17 +13,42 @@ Definition of done:
 * https://en.wikipedia.org/wiki/Fizz_buzz
 ** https://www.youtube.com/watch?v=NSzsYWckGd4
 """
-# making 'pattern lists' for triples and fives
-triple_list = ['', '', "fizz"]
-five_list = ['', '', '', '', 'buzz']
 
 
-def fizzbuzz(n: int):
-    # biulding triples list from 1 to parameter value
-    triples = triple_list*(n // 3) + triple_list[:n % 3]
-    # and fives list from 1 to parameter value
-    pentas = five_list*(n // 5) + five_list[:n % 5]
-    # zipping two lists using simple map function:
-    # res[i] = triples[i] + fives[i]
-    # (string concatenation works as well for fizzbuzz numbers)
-    return map(lambda x: x[0] + x[1], zip(triples, pentas))
+def pattern(base):
+    """ declarative-based approach function
+    that returns value according with FizzBuzz sequence
+    definition """
+    yield str(base + 1)  # number
+    yield str(base + 2)  # number
+    yield "fizz"  # third position - fizz!
+    yield str(base + 4)  # number
+    yield "buzz"  # fifth position - buzz!!
+    yield "fizz"  # sixth (3*2) position - fizz
+    yield str(base + 7)  # number
+    yield str(base + 8)  # number
+    yield "fizz"  # ninth (3*3) position - fizz
+    yield "buzz"  # tenth (5*2) position - buzz
+    yield str(base + 11)  # number
+    yield "fizz"  # twelth position (3*4) - fizz
+    yield str(base + 13)  # number
+    yield str(base + 14)  # number
+    yield "fizzbuzz"  # fithteenth (3*5) position - fizzbuzz!
+
+
+def fizzbuzz_generator():
+    """ endless fizzbuzz sequence generator """
+    counter = 0
+    while True:
+        # return pattern value
+        for element in pattern(counter*15):
+            yield element
+        counter += 1
+
+
+def fizzbuzz(n):
+    """ getting fizzbuzz generator function object and
+    use it to produce limited fizzbuzz sequence"""
+    source_generator = fizzbuzz_generator()
+    for _ in range(n):
+        yield next(source_generator)
