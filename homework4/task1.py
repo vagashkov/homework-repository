@@ -25,20 +25,22 @@ Use sample from the documentation.
 *** https://docs.python.org/3/tutorial/errors.html#handling-exceptions
 **** https://docs.python.org/3/tutorial/errors.html#raising-exceptions
 """
-import os
 
 
 def read_magic_number(path: str) -> bool:
+    """ Opens file (path given in parameter), reads it's first
+    line and return true if number in an interval [1, 3) and
+    false otherwise. In case of any error ValueError exception
+    is thrown """
     try:
-        # clearly we cannot open file
-        # if it doesn't exist
-        if not os.path.exists(path):
-            raise OSError
         # trying to read the first line
         with open(path, "r") as fi:
             first_line = fi.readline()
-            # return result (and here we also can got a ValueError)
-            return True if 3 > float(first_line.strip()) >= 1 else False
-    # process all errors in uniform way
+            # return result
+            magic_number = float(first_line.strip())
+            if (magic_number < 1) or (magic_number >= 3):
+                return False
+            return True
+    # process all errors in uniform way - raise ValueError
     except BaseException:
-        return False
+        raise ValueError
