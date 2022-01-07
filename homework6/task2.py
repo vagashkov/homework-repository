@@ -70,8 +70,8 @@ class Student(Person):
         return HomeworkResult(self, homework, solution)
 
     def get_my_homeworks(self, teacher, grade):
-        """ function receives list of Homework objects, executed by 
-        this student and received specifitd grade (from any teacher as 
+        """ function receives list of Homework objects, executed by
+        this student and received specifitd grade (from any teacher as
         they use common HomeworkResult storage) """
         my_homeworks = []
         # TODO: use filter function
