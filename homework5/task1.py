@@ -10,6 +10,8 @@ Homework)
     deadline - хранит объект datetime.timedelta с количеством
     дней на выполнение
     created - c точной датой и временем создания
+* Update:
+    progress - характеристика завершенности (от 0 до 100)
 Методы:
     is_active - проверяет не истекло ли время на выполнение задания,
     возвращает boolean
@@ -20,6 +22,12 @@ Homework)
 Методы:
     do_homework - принимает объект Homework и возвращает его же,
     если задание уже просрочено, то печатет 'You are late' и возвращает None
+* Update:
+    - добавлен новый параметр teacher_helps: если он равен True, то работа
+    сдается в любом случае (даже просроченной)
+    - добавлена вероятность выполнения домашней работы (для случая,
+    когда она не просрочена и нет помощи учителя) - 80% (вычисляется на основе
+    значения случайного целого числа в диапазоне от 0 до 4)
 3. Teacher
 Атрибуты:
      last_name
@@ -34,6 +42,7 @@ PEP8 соблюдать строго.
 давать логичные подходящие имена.
 """
 import datetime
+from random import randrange
 
 
 class Student:
@@ -41,10 +50,24 @@ class Student:
         self.first_name = first_name
         self.last_name = last_name
 
-    def do_homework(self, homework):
+    def do_homework(self, homework, teacher_helps=False):
+        """ homework 'execution' routine """
+        # with  teacher help homework will always be completed
+        if teacher_helps:
+            homework.progress = 100
+            return homework
+        # no help - and too late
         if not homework.is_active():
             print("You are late")
             return None
+        # no help but still have time - there is a chance!
+        # getting random number in range from 0 to 4
+        chance = randrange(0, 4)
+        # no chance (got zero) - no homework done (
+        if not chance:
+            return None
+        # else - we hade a chance and did it!
+        homework.progress = 100
         return homework
 
 
@@ -63,6 +86,7 @@ class Homework:
         self.text = text
         self.deadline = datetime.timedelta(days=days)
         self.created = datetime.datetime.now()
+        self.progress = 0
 
     def is_active(self):
         now = datetime.datetime.now()

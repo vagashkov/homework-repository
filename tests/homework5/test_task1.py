@@ -11,6 +11,15 @@ def test_do_homework_expired(capsys):
     assert capsys.readouterr().out == "You are late\n"
 
 
+def test_do_homework_with_teacher():
+    """ Creating and checking expired homework """
+    teacher = Teacher('Daniil', 'Shadrin')
+    student = Student('Roman', 'Petrov')
+
+    assisted_homework = teacher.create_homework('Learn functions', 0)
+    assert student.do_homework(assisted_homework, True)
+
+
 def test_do_homework_active():
     """ Creating and checking active homework"""
     teacher = Teacher('Daniil', 'Shadrin')
