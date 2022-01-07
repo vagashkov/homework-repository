@@ -81,10 +81,12 @@ class Teacher(Person):
         homework = Homework(hw_text, hw_days)
         return homework
 
-    def check_homework(self, homework_result):
+    def check_homework(self, homework_result, grade):
         """ checking if homework is done properly
         (its solution text is longer than 5 characters"""
         if len(homework_result.solution) > 5:
+            # put grade into HomeworkResult object
+            homework_result.grade = grade
             # storing HomeworkResult object in a dict
             self.homework_done[homework_result.homework] = homework_result
             return True
@@ -124,3 +126,4 @@ class HomeworkResult:
         self.author = author
         self.homework = homework
         self.solution = solution
+        self.grade = 0
