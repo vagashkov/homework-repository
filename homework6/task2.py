@@ -54,19 +54,28 @@ from collections import defaultdict
 
 
 class Person:
-    """ Base class for every kind of person (incl. teachers & students"""
+    """ Base class for every kind of person (incl. teachers & students) """
     def __init__(self, first_name, last_name):
         self.first_name = first_name
         self.last_name = last_name
 
 
 class Student(Person):
-    """" returns HomeWork result if work done in time
-    otherwise raises the custom exception """
+    """ class for students """
     def do_homework(self, homework, solution):
+        """" returns HomeWork result if work done in time
+        otherwise raises the custom exception """
         if not homework.is_active():
             raise DeadlineError("You are late")
         return HomeworkResult(self, homework, solution)
+
+    def get_my_homeworks(self, teacher, grade):
+        my_homeworks = []
+        for homework_result in Teacher.homework_done.values():
+            if (homework_result.grade == grade
+                    and homework_result.author == self):
+                my_homeworks.append(homework_result)
+        return my_homeworks
 
 
 class Teacher(Person):
