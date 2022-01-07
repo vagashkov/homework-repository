@@ -70,11 +70,15 @@ class Student(Person):
         return HomeworkResult(self, homework, solution)
 
     def get_my_homeworks(self, teacher, grade):
+        """ function receives list of Homework objects, executed by 
+        this student and received specifitd grade (from any teacher as 
+        they use common HomeworkResult storage) """
         my_homeworks = []
+        # TODO: use filter function
         for homework_result in Teacher.homework_done.values():
             if (homework_result.grade == grade
                     and homework_result.author == self):
-                my_homeworks.append(homework_result)
+                my_homeworks.append(homework_result.homework)
         return my_homeworks
 
 
