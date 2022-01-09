@@ -15,17 +15,24 @@ Examples:
 """
 
 
-def process_backspaces(input_str: str):
-    while "#" in input_str:
-        # cleaning backspaces at the beginning
-        if input_str[0] == "#":
-            input_str = input_str[1:]
-        # found # inside string - remove it with symbol to the left
+def process_string(input_str: str):
+    """ function emulates backspace processing
+    using stack-like behavior"""
+    result = []
+    for symbol in input_str:
+        # 'backspace' found
+        if symbol == "#":
+            # popping last item from 'stack'
+            # if it isn't already empty
+            if len(result) > 1:
+                result.pop(-1)
+        # 'letter' found - append it to 'stack'
         else:
-            bs_index = input_str.index("#")
-            input_str = input_str[: bs_index-1] + input_str[bs_index+1:]
-    return input_str
+            result.append(symbol)
+    # return result as string
+    return "".join(result)
 
 
 def backspace_compare(first: str, second: str):
-    return process_backspaces(first) == process_backspaces(second)
+    """ compare processed strings """
+    return process_string(first) == process_string(second)

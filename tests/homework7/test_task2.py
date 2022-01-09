@@ -10,7 +10,8 @@ test_data = [
     # False: first becomes "c" while second becomes "b".
     ("a#c", "b", False),
     # True: first becomes empty, second is already empty
-    ("###", "", True)]
+    ("###", "", True)
+    ]
 
 
 @pytest.mark.parametrize("first, second, expected", test_data)
