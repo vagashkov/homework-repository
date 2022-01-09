@@ -5,26 +5,38 @@ of this element in the tree.
 Tree can only contains basic structures like:
     str, list, tuple, dict, set, int, bool
 """
+from collections import abc
 from typing import Any
 
 
-def find_occurrences(tree: dict, element: Any) -> int:
+def find_element(scope, element) -> int:
+    """ recursive function to find element
+    occurencies in any kind of object from listed
+    in task definition """
     element_counter = 0
-    for key, value in tree.items():
-        # looking for element ocurrences is dict itself
-        # direct comparison
-        if value == element:
-            print(key)
+    # non-iterable object(int or bool)
+    if not isinstance(scope, abc.Iterable):
+        # making simple comparison
+        if scope == element:
             element_counter += 1
-        # element is.. an element of value (int in set f.e.)
-        elif element in value:
-            print(key)
+    # iterable - but simply a string
+    elif isinstance(scope, str):
+        # making simple comparison too
+        if scope == element:
             element_counter += 1
-        # now let's look in nested structures
-        elif isinstance(value, dict):
-            element_counter += find_occurrences(value, element)
-        elif isinstance(value, list):
-            for item in value:
-                if isinstance(item, dict):
-                    element_counter += find_occurrences(item, element)
+    # iterable object: list, tuple, dict, set
+    else:
+        # object is not dict - browse through its items
+        if not isinstance(scope, abc.Mapping):
+            for item in scope:
+                element_counter += find_element(item, element)
+        # mapping object (dict) - browse through values
+        else:
+            for item in scope.values():
+                element_counter += find_element(item, element)
     return element_counter
+
+
+def find_occurrences(tree: dict, element: Any) -> int:
+    """ use resursive function to process tree """
+    return find_element(tree, element)

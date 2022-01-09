@@ -6,7 +6,7 @@ example_tree = {
     "second": {
         "simple_key": ["simple", "list", "of", "RED", "valued"],
     },
-    "third": {
+    "third, fourth and fifth": {
         "abc": "BLUE",
         "jhl": "RED",
         "complex_key": {
@@ -15,12 +15,13 @@ example_tree = {
             "key3": ["a", "lot", "of", "values", {"nested_key": "RED"}],
         }
      },
-    "fourth": "RED",
-    "fifth": ("RED",),
-    "sixth": {"RED", "NOT_RED"}
+    "sixth": "RED",
+    "seventh": ("RED",),
+    "eighth": {"RED", "NOT_RED"},
+    "ninth and tenth!": ["RED", ["RED"]]
 }
 
 
 def test_find_occurrences_ext():
-    """ parsing an example tree (with tuple and set appended)"""
-    assert find_occurrences(example_tree, "RED") == 8
+    """ parsing an example tree """
+    assert find_occurrences(example_tree, "RED") == 10
