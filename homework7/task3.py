@@ -26,13 +26,13 @@ def tic_tac_toe_checker(board: List[List]) -> str:
     # checking rows - if it contains winner (all the same characters)
     # it's set length will be 1
     for row in board:
-        if len(set(row)) == 1:
+        if len(set(row)) == 1 and row[0] != "-":
             return set(row).pop() + " wins!"
 
     # checking columns
     for i in range(len(board[0])):
         column = [row[i] for row in board]
-        if len(set(column)) == 1:
+        if len(set(column)) == 1 and column[0] != "-":
             return column[0] + " wins!"
 
     # checking downrising diagonal

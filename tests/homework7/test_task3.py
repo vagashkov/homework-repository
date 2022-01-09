@@ -38,7 +38,20 @@ test_data = [
         ['-', 'o', 'x'],
         ['x', 'x', 'o'],
         ['o', 'o', 'x']],
-        "unfinished!")]
+        "unfinished!"),
+    # unfinished II
+    ([
+        ['-', '-', '-'],
+        ['x', 'x', 'o'],
+        ['o', 'o', 'x']],
+        "unfinished!"),
+    # unfinished III
+    ([
+        ['-', 'x', 'o'],
+        ['-', 'x', 'o'],
+        ['-', 'o', 'x']],
+        "unfinished!"),
+    ]
 
 
 @pytest.mark.parametrize("matrix, expected", test_data)
