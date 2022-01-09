@@ -37,14 +37,14 @@ def tic_tac_toe_checker(board: List[List]) -> str:
 
     # checking downrising diagonal
     diagonal = [board[i][i] for i in range(len(board[0]))]
-    if len(set(diagonal)) == 1:
+    if len(set(diagonal)) == 1 and diagonal[0] != "-":
         return diagonal[0] + " wins!"
 
     # checking uprising diagonal
     diagonal = []
     for i in range(len(board[0])):
         diagonal.append(board[i][len(board[0])-1-i])
-    if len(set(diagonal)) == 1:
+    if len(set(diagonal)) == 1 and diagonal[0] != "-":
         return diagonal[0] + " wins!"
 
     # so if we are here - no one wins or the game is still in progress?
