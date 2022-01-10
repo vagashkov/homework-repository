@@ -39,6 +39,7 @@ import re
 class KeyValueStorage(dict):
     """ storage wrapper key-value formatted files"""
     def __init__(self, file_path):
+        self.file_path = file_path
         # pattern for valid attribute names
         attr_name_pattern = r'[a-zA-Z_][a-zA-Z0-9_]*'
         # trying to open file
@@ -55,6 +56,29 @@ class KeyValueStorage(dict):
                 # checking for built-in attrs name conflict
                 self[key] = value
 
+    def store_in_file(self):
+        """ function that simply writes dict content
+        into file as key=value pairs """
+        with open(os.getcwd() + self.file_path, "w",
+                  encoding='utf-8-sig') as fi:
+            for key in self:
+                fi.write(key + "=" + str(self[key]) + "\n")
+
     def __getattr__(self, attr):
         """ 'translate' attribute-based access into key-based """
         return self[attr]
+
+    def __setattr__(self, name, value):
+        """ store new and changed values in object and in file  """
+        # first check if it is file_path (special attribute)
+        # and simply store it into object attribute
+        if name == "file_path":
+            super(KeyValueStorage, self).__setattr__("file_path", value)
+        else:
+            self[name] = value
+            self.store_in_file()
+
+    def __delattr__(self, attr):
+        """ 'delete' attribute from dict """
+        self.pop(attr, None)
+        self.store_in_file()
