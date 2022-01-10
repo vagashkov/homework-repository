@@ -30,3 +30,22 @@ def test_tabledata_iterate():
     """ checking if storage object can be iterated through """
     names_list = [row['name'] for row in storage]
     assert names_list == ['Yeltsin', 'Trump', 'Big Man Tyrone']
+
+
+def test_tabledata_update_record():
+    """ inserting new and updating an existing records  """
+    storage['Obama'] = (50, "USA")
+    record = storage['Obama']
+    record_data = [record[key] for key in record.keys()]
+    assert record_data == ['Obama', 50, "USA"]
+
+    storage['Obama'] = (60, "Keniya")
+    record = storage['Obama']
+    record_data = [record[key] for key in record.keys()]
+    assert record_data == ['Obama', 60, "Keniya"]
+
+
+def test_del_attr():
+    """ deleting existing record """
+    delattr(storage, "Obama")
+    assert "Obama" not in storage

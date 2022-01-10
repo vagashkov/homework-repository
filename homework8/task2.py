@@ -34,3 +34,29 @@ class TableData(dict):
         cursor = self.conn.cursor()
         cursor.execute(f"SELECT * from {self.table}")
         return cursor
+
+    def __setitem__(self, key, value):
+        """ insert (update) record """
+        cursor = self.conn.cursor()
+        query = f"SELECT count(*) from {self.table} where name='{key}'"
+        data = cursor.execute(query).fetchall()
+        if not bool(data[0][0]):
+            # inserting new record
+            query = f"INSERT INTO {self.table} VALUES(?,?,?)"
+            values = (key, ) + value
+            cursor.execute(query, values)
+            self.conn.commit()
+        else:
+            # updating an existing record
+            query = f"UPDATE {self.table} SET age = ?, country = ?"
+            query += "WHERE name = ?"
+            values = value + (key, )
+            cursor.execute(query, values)
+            self.conn.commit()
+
+    def __delattr__(self, key):
+        """ 'delete' attribute from dict """
+        cursor = self.conn.cursor()
+        query = f"DELETE from {self.table} where name='{key}'"
+        cursor.execute(query)
+        self.conn.commit()
