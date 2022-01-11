@@ -18,7 +18,7 @@ from typing import Iterator, List, Union
 
 
 def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
-    """ parsing through the files, constructing the dict line by line"""
+    """ parsing through the files, constructing list line by line"""
     result = []
     for filename in file_list:
         with open(os.getcwd()+"//"+filename, "r",

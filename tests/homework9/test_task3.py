@@ -5,8 +5,8 @@ import pytest
 from homework9.task3 import universal_file_counter
 
 test_data = [
-    ((os.getcwd()+"/homework9/", "txt", None), 13),
-    ((os.getcwd()+"/homework9/", "txt", str.split), 15)
+    ((os.getcwd()+"/homework9/", "txt", None), 52),
+    ((os.getcwd()+"/homework9/", "txt", str.split), 60)
 ]
 
 

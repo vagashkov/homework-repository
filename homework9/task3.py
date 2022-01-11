@@ -23,20 +23,23 @@ def universal_file_counter(
     """ function to count number of token occasions in
     all the files with specified extension in given directory"""
     counter = 0
-    # browsing through the directory (first level only)
-    for filename in os.listdir(dir_path):
-        file = os.fsdecode(filename)
-        # checking if file extension is correct
-        if file.lower().endswith("."+file_extension):
-            with open(os.path.join(dir_path, file), "r",
-                      encoding='utf-8-sig') as fi:
-                # no tokenizer given - simply count
-                # number of strings
-                if not tokenizer:
-                    file_count = sum(1 for line in fi)
-                    counter += file_count
-                else:
-                    # we have callable tokenizer - so apply it
-                    # to file content and get a number of occasions
-                    counter += len(tokenizer.__call__(fi.read()))
+    # browsing through the directory
+    for root, subdirs, files in os.walk(dir_path):
+        for file in files:
+            # checking if file extension is correct
+            if file.lower().endswith("."+file_extension):
+                with open(os.path.join(dir_path, file), "r",
+                          encoding='utf-8-sig') as fi:
+                    # no tokenizer given - simply count
+                    # number of strings
+                    if not tokenizer:
+                        file_count = sum(1 for line in fi)
+                        counter += file_count
+                    else:
+                        # we have callable tokenizer - so apply it
+                        # to file content and get a number of occasions
+                        counter += len(tokenizer.__call__(fi.read()))
+        for subdir in subdirs:
+            counter += universal_file_counter(
+                subdir, file_extension, tokenizer)
     return counter
