@@ -17,19 +17,23 @@ def custom_range(some_iterable, *args):
     # transfming iterable into sequence
     # in order to use slicing
     source_list = list(some_iterable)
-    res_list = []
+    # building initial values for slicing parameters
+    start_pos = 0
+    end_pos = len(source_list)
+    step = 1
     # parsing different args combinations:
     # right bound-based range
     if len(args) == 1:
-        return source_list[:source_list.index(args[0])]
+        end_pos = source_list.index(args[0])
     # left and right bound-based range
     elif len(args) == 2:
-        return source_list[source_list.index(args[0]):
-                           source_list.index(args[1])]
+        start_pos = source_list.index(args[0])
+        end_pos = source_list.index(args[1])
     # left and right bound-based range with custom step
     elif len(args) == 3:
-        return source_list[source_list.index(args[0]):
-                           source_list.index(args[1]):args[2]]
+        start_pos = source_list.index(args[0])
+        end_pos = source_list.index(args[1])
+        step = args[2]
     else:
         pass
-    return res_list
+    return source_list[start_pos:end_pos:step]
