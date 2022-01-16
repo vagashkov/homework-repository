@@ -15,22 +15,13 @@ from typing import List, Tuple
 
 
 def major_and_minor_elem(inp: List) -> Tuple[int, int]:
-    # setting up initial values
-    most_elem = None
-    least_elem = None
-    most_count = 0
-    least_count = len(inp)
+    # making an empty 'item-number of occasions' dict
+    item_counts = {}
 
     # calculating number of occasions for all unique elements
     for item in set(inp):
-        # getting number of occasions for current item
-        item_count = inp.count(item)
-        # new leader detected
-        if item_count > most_count:
-            most_elem = item
-            most_count = item_count
-        # new "looser"
-        if item_count < least_count:
-            least_elem = item
-            least_count = item_count
-    return(most_elem, least_elem)
+        item_counts[item] = inp.count(item)
+    # now convert sorted dict to list of tuples
+    counts = list(sorted(item_counts.items(), key=lambda item: item[1]))
+    # and return it's last (most common) and first (least common) elements
+    return(counts[-1][0], counts[0][0])
