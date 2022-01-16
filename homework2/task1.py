@@ -26,10 +26,11 @@ def get_longest_diverse_words(file_path: str,
             for word in line.split():
                 word = word.translate(str.maketrans("", "",
                                                     string.punctuation))
-                # putting new word into dict (or update existing)
+                # putting new word into list
                 if word not in res_list:
                     res_list.append(word)
-    # sorting words by len in reverse order
+    # sorting words by number of unique symbols
+    # in it - from largest to smallest
     res_list.sort(key=lambda s: len(set(s)), reverse=True)
     # and returning results
     return res_list[:10]
@@ -44,7 +45,7 @@ def get_rarest_char(file_path: str, encoding="utf-8") -> str:
         for line in fi:
             for char in line:
                 # new character
-                if char not in res_dict.keys():
+                if char not in res_dict:
                     res_dict[char] = 1
                 # already known character
                 else:
