@@ -27,10 +27,3 @@ def test_count_dots_on_i_positive():
         # and returning 'hand-crafted' response object
         mock_urlopen.return_value = fake_response
         assert count_dots_on_i('http://google.com') == 7
-
-
-def test_count_dots_on_i_negative():
-    fake_response = FakeResponse()
-    with patch('urllib.request.urlopen') as mock_urlopen:
-        mock_urlopen.return_value = fake_response
-        assert not count_dots_on_i('http://google.com') == 5
