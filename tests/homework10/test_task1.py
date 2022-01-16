@@ -6,9 +6,13 @@ from homework10.task1 import build_data
 # files list to check
 files_list = [
         "price_winners.txt",
+        "price_winners.csv",
         "pe_winners.txt",
+        "pe_winners.csv",
         "growth_winners.txt",
-        "bargain_winners.txt"
+        "growth_winners.csv",
+        "bargain_winners.txt",
+        "bargain_winners.csv"
 ]
 
 

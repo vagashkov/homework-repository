@@ -1,4 +1,5 @@
 ﻿import asyncio
+import csv
 import json
 import os
 import urllib.request
@@ -183,71 +184,124 @@ async def run(companies_list):
     return responses
 
 
-def get_top_by_stock_price(count: int):
+def get_top_by_stock_price(count: int, mode: str):
     """ function gets top n companies by current
-    stock price and stores it into JSON file"""
+    stock price and stores it into CSV or JSON file"""
     # we need current USD exchange rate
     usd_rate = get_usd_rate()
-    # gettin companies list
+    # getting companies list
     top_priced = sorted(allCompanies,
                         key=lambda x: x.cur_price_usd, reverse=True)[:count]
-    # and put it into file in JSON format
-    with open(os.getcwd() + r"/homework10/price_winners.txt",
-              "w") as price_winners:
-        for winner in top_priced:
-            # bpreparing dict with necessary info
-            json_dict = {}
-            json_dict["name"] = winner.name
-            json_dict["code"] = winner.code
-            json_dict["price"] = winner.cur_price_usd * usd_rate
-            # and store it into file
-            json.dump(json_dict, price_winners)
+    # loading into JSON file
+    if mode == "json":
+        # put info into file in JSON format
+        with open(os.getcwd() + r"/homework10/price_winners.txt",
+                  "w") as file:
+            for winner in top_priced:
+                # bpreparing dict with necessary info
+                json_dict = {}
+                json_dict["name"] = winner.name
+                json_dict["code"] = winner.code
+                json_dict["price"] = winner.cur_price_usd * usd_rate
+                # and store it into file
+                json.dump(json_dict, file)
+    # loading into CSV file
+    elif mode == "csv":
+        with open(os.getcwd() + r"/homework10/price_winners.csv",
+                  "w") as file:
+            csv_writer = csv.writer(file, delimiter=",", quotechar='"',
+                                    quoting=csv.QUOTE_MINIMAL)
+            csv_writer.writerow(("name", "code", "price"))
+            for winner in top_priced:
+                csv_writer.writerow((winner.name,
+                                     winner.code,
+                                     winner.cur_price_usd * usd_rate))
 
 
-def get_top_by_lowest_pe_ratio(count: int):
+def get_top_by_lowest_pe_ratio(count: int, mode: str):
     """ function gets top n companies by lowest
-    P/E ratio and stores it into JSON file"""
+    P/E ratio and stores it into CSV or JSON file"""
     lowest_pe = sorted(allCompanies,
                        key=lambda x: x.pe_ratio)[:count]
-    with open(os.getcwd() + r"/homework10/pe_winners.txt",
-              "w") as pe_winners:
-        for winner in lowest_pe:
-            json_dict = {}
-            json_dict["name"] = winner.name
-            json_dict["code"] = winner.code
-            json_dict["P//E"] = winner.pe_ratio
-            json.dump(json_dict, pe_winners)
+    # loading into JSON file
+    if mode == "json":
+        with open(os.getcwd() + r"/homework10/pe_winners.txt",
+                  "w") as pe_winners:
+            for winner in lowest_pe:
+                json_dict = {}
+                json_dict["name"] = winner.name
+                json_dict["code"] = winner.code
+                json_dict["P//E"] = winner.pe_ratio
+                json.dump(json_dict, pe_winners)
+    # loading into CSV file
+    elif mode == "csv":
+        with open(os.getcwd() + r"/homework10/pe_winners.csv",
+                  "w") as file:
+            csv_writer = csv.writer(file, delimiter=",", quotechar='"',
+                                    quoting=csv.QUOTE_MINIMAL)
+            csv_writer.writerow(("name", "code", "pe_ratio"))
+            for winner in lowest_pe:
+                csv_writer.writerow((winner.name,
+                                     winner.code,
+                                     winner.pe_ratio))
 
 
-def get_top_by_annual_growth(count: int):
+def get_top_by_annual_growth(count: int, mode: str):
     """ function gets top n companies by year
-    growth and stores it into JSON file"""
+    growth and stores it into CSV or JSON file"""
     top_growth = sorted(allCompanies,
                         key=lambda x: x.year_results, reverse=True)[:count]
-    with open(os.getcwd() + r"/homework10/growth_winners.txt",
-              "w") as growth_winners:
-        for winner in top_growth:
-            json_dict = {}
-            json_dict["name"] = winner.name
-            json_dict["code"] = winner.code
-            json_dict["growth"] = winner.year_results
-            json.dump(json_dict, growth_winners)
+    # loading into JSON file
+    if mode == "json":
+        with open(os.getcwd() + r"/homework10/growth_winners.txt",
+                  "w") as growth_winners:
+            for winner in top_growth:
+                json_dict = {}
+                json_dict["name"] = winner.name
+                json_dict["code"] = winner.code
+                json_dict["growth"] = winner.year_results
+                json.dump(json_dict, growth_winners)
+    # loading into CSV file
+    elif mode == "csv":
+        with open(os.getcwd() + r"/homework10/growth_winners.csv",
+                  "w") as file:
+            csv_writer = csv.writer(file, delimiter=",", quotechar='"',
+                                    quoting=csv.QUOTE_MINIMAL)
+            csv_writer.writerow(("name", "code", "year_results"))
+            for winner in top_growth:
+                csv_writer.writerow((winner.name,
+                                     winner.code,
+                                     winner.year_results))
 
 
-def get_top_by_stock_bargain(count: int):
+def get_top_by_stock_bargain(count: int, mode: str):
     """ function gets top n companies by individual
-    stock price raise and stores it into JSON file"""
+    stock price raise and stores it into CSV or JSON file"""
     top_bargain = sorted(allCompanies,
                          key=lambda x: x.year_high-x.year_low,
                          reverse=True)[:count]
-    with open(os.getcwd() + r"/homework10/bargain_winners.txt",
-              "w") as bargain_winners:
-        for winner in top_bargain:
-            json_dict = {}
-            json_dict["name"] = winner.name
-            json_dict["code"] = winner.code
-            json_dict["potential profit"] = winner.year_high - winner.year_low
-            json.dump(json_dict, bargain_winners)
+    # loading into JSON file
+    if mode == "json":
+        with open(os.getcwd() + r"/homework10/bargain_winners.txt",
+                  "w") as bargain_winners:
+            for winner in top_bargain:
+                json_dict = {}
+                json_dict["name"] = winner.name
+                json_dict["code"] = winner.code
+                potential_profit = winner.year_high - winner.year_low
+                json_dict["potential profit"] = potential_profit
+                json.dump(json_dict, bargain_winners)
+    # loading into CSV file
+    elif mode == "csv":
+        with open(os.getcwd() + r"/homework10/bargain_winners.csv",
+                  "w") as file:
+            csv_writer = csv.writer(file, delimiter=",", quotechar='"',
+                                    quoting=csv.QUOTE_MINIMAL)
+            csv_writer.writerow(("name", "code", "potential_profit"))
+            for winner in top_bargain:
+                csv_writer.writerow((winner.name,
+                                     winner.code,
+                                     winner.year_high - winner.year_low))
 
 
 def build_data():
@@ -261,14 +315,26 @@ def build_data():
     except RuntimeError as ex:
         print(ex)
 
-    # getting top-10 companies by stock price
-    get_top_by_stock_price(10)
+    # getting top-10 companies by stock price (JSON format)
+    get_top_by_stock_price(10, "json")
 
-    # getting top-10 companies with lowest P/E ratio
-    get_top_by_lowest_pe_ratio(10)
+    # getting top-10 companies by stock price (CSV format)
+    get_top_by_stock_price(10, "csv")
 
-    # getting top-10 companies by annual growth
-    get_top_by_annual_growth(10)
+    # getting top-10 companies with lowest P/E ratio (JSON format)
+    get_top_by_lowest_pe_ratio(10, "json")
 
-    # getting top-10 top bargain (for individual stock)
-    get_top_by_stock_bargain(10)
+    # getting top-10 companies with lowest P/E ratio (CSV format)
+    get_top_by_lowest_pe_ratio(10, "csv")
+
+    # getting top-10 companies by annual growth (JSON format)
+    get_top_by_annual_growth(10, "json")
+
+    # getting top-10 companies by annual growth (CSV format)
+    get_top_by_annual_growth(10, "csv")
+
+    # getting top-10 top bargain (for individual stock) (JSON format)
+    get_top_by_stock_bargain(10, "json")
+
+    # getting top-10 top bargain (for individual stock) (CSV format)
+    get_top_by_stock_bargain(10, "csv")
