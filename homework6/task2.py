@@ -71,11 +71,15 @@ class Student(Person):
 
     def get_my_homeworks(self, teacher, grade):
         """ function receives list of Homework objects, executed by
-        this student and received specifitd grade (from any teacher as
-        they use common HomeworkResult storage) """
+        this student and received specified grade
+        (from any teacher as they use common HomeworkResult storage) """
         my_homeworks = []
+        # first, get the Teacher class object using __class__ attribute
+        # of its instance
+        teachers_class = teacher.__class__
+        # then look for homework_results with specified parameters
         # TODO: use filter function
-        for homework_result in Teacher.homework_done.values():
+        for homework_result in teachers_class.homework_done.values():
             if (homework_result.grade == grade
                     and homework_result.author == self):
                 my_homeworks.append(homework_result.homework)
