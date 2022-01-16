@@ -25,7 +25,7 @@ def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
     # initial values (although raising an exception
     # could be better option)
     if not exists(getcwd() + file_name):
-        return (max, min)
+        raise ValueError
     # trying to open file
     with open(getcwd() + file_name, "r", encoding="utf-8-sig") as fi:
         # and walking it line by line
