@@ -10,36 +10,35 @@ For dir with two files from hw1.py:
 >>> universal_file_counter(test_dir, "txt", str.split)
 6
 """
-import os
 from pathlib import Path
 from typing import Callable, Optional
 
 
+def single_file_counter(file_path: Path,
+                        tokenizer: Optional[Callable] = None) -> int:
+    """ function counts lines in spicified file if
+    tokenizer is None, otherwise counts tokens """
+    with open(file_path, "r",
+              encoding='utf-8-sig') as fi:
+        # no tokenizer given - simply count
+        # number of strings
+        if not tokenizer:
+            return sum(1 for line in fi)
+        else:
+            # we have callable tokenizer - so apply it
+            # to file content and get a number of occasions
+            return len(tokenizer.__call__(fi.read()))
+
+
 def universal_file_counter(
-    dir_path: Path,
-    file_extension: str,
-    tokenizer: Optional[Callable] = None
-) -> int:
+        dir_path: Path,
+        file_extension: str,
+        tokenizer: Optional[Callable] = None) -> int:
     """ function to count number of token occasions in
     all the files with specified extension in given directory"""
     counter = 0
     # browsing through the directory
-    for root, subdirs, files in os.walk(dir_path):
-        for file in files:
-            # checking if file extension is correct
-            if file.lower().endswith("."+file_extension):
-                with open(os.path.join(dir_path, file), "r",
-                          encoding='utf-8-sig') as fi:
-                    # no tokenizer given - simply count
-                    # number of strings
-                    if not tokenizer:
-                        file_count = sum(1 for line in fi)
-                        counter += file_count
-                    else:
-                        # we have callable tokenizer - so apply it
-                        # to file content and get a number of occasions
-                        counter += len(tokenizer.__call__(fi.read()))
-        for subdir in subdirs:
-            counter += universal_file_counter(
-                subdir, file_extension, tokenizer)
+    path = Path(dir_path)
+    for element in path.glob("**/*." + file_extension):
+        counter += single_file_counter(element, tokenizer)
     return counter
