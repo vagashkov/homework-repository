@@ -19,21 +19,22 @@ assert order_1.final_price() == 75
 order_2 = Order(100, elder_discount)
 assert order_2.final_price() == 10
 """
+from typing import Callable
 
 
-def morning_discount():
+def morning_discount(order) -> float:
     """ calculate discount for mornings """
     discount_rate = 0.25
     return 1-discount_rate
 
 
-def elder_discount():
+def elder_discount(order) -> float:
     """ calculate discount for long-timers """
     discount_rate = 0.9
     return 1-discount_rate
 
 
-def student_discount():
+def student_discount(order) -> float:
     """ calculate discount for students """
     discount_rate = 0.3
     return 1-discount_rate
@@ -41,13 +42,19 @@ def student_discount():
 
 class Order:
     """ class to calculate discounts """
-    def __init__(self, price, func=None):
+    def __init__(self, price, calc_discount_func: Callable[[], float] = None):
         """ store price and discount calculate function
         (if any) """
         self.price = price
-        if func:
-            self.calc_discount = func
+        # if we have discount function object -
+        # store it in attribute
+        if calc_discount_func:
+            self.calc_discount = calc_discount_func
 
-    def final_price(self):
+    def final_price(self) -> float:
         """ calculate discount for current order """
-        return self.price*self.calc_discount()
+        if self.calc_discount:
+            return self.price*self.calc_discount(self)
+        # no discount - pay full price
+        else:
+            return self.price
