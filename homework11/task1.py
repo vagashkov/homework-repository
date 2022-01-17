@@ -27,13 +27,16 @@ assert SizesEnum.XL == "XL"
 
 
 class SimplifiedEnum(type):
-    def __new__(meta_cls, name, bases, dct):
-        """ building new class object from scratch """
+    """ class to produce classes """
+    def __new__(meta_cls, cls_name, cls_bases, dict):
+        # first check if dict has an item with keys list
+        # ("_" + cls_name + "__keys")
+        keys_list = "_" + cls_name + "__keys"
+        if keys_list in dict:
+            # now we need to build temp dict with values from __keys
+            keys_values = {key: key for key in dict[keys_list]}
+            # update initial attributes list with values
+            dict.update(keys_values)
+        # and finally build new class with updated attributes list
         return super(SimplifiedEnum,
-                     meta_cls).__new__(meta_cls, name, bases, dct)
-
-    def __getattr__(self, attr):
-        """ simulate 'enum-like' behavour """
-        if attr in self.keys_list:
-            return attr
-        return None
+                     meta_cls).__new__(meta_cls, cls_name, cls_bases, dict)
