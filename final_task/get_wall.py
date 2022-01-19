@@ -1,8 +1,8 @@
 ﻿import csv
 import os
-import requests
 import time
 
+import requests
 
 # biulding url for GET request
 base_url = "https://api.vk.com/method/"
