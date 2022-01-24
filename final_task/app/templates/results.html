@@ -1,0 +1,31 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+   <h1>Your reports: </h1>
+   <div>
+     <button type="button" class="collapsible">Statistis</button>
+     <div class="content">
+     {{ posts_table | safe }}
+     <p>
+     {{ details_table | safe }}
+     </div>
+     <div>
+     <p>
+     <a href="/return-files/" target="blank"><button class='btn btn-default'>Download CSV</button></a>
+   </div>
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+{% endblock %}

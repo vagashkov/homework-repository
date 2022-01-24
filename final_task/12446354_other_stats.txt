@@ -1,1 +1,0 @@
-{"likes": {"by_year": 1841.0, "by_month": 1534.1666666666667, "by_weekday": 2630.0, "by_hour": 767.0833333333334}, "reposts": {"by_year": 507.8, "by_month": 423.1666666666667, "by_weekday": 725.4285714285714, "by_hour": 211.58333333333334}, "comments": {"by_year": 102.2, "by_month": 85.16666666666667, "by_weekday": 146.0, "by_hour": 42.583333333333336}}
