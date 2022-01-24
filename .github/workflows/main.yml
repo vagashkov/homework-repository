@@ -4,6 +4,9 @@ name: CI
 
 on: push
 
+env:
+    ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    
 jobs:
   code_quality:
     runs-on: ubuntu-latest
