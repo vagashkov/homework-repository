@@ -19,13 +19,6 @@ class VKSource(Source):
     base_url = "https://api.vk.com/method/"
     method = "wall.get"
 
-    def read_token(self) -> str:
-        """Function receives access token from specified text file."""
-        access_token = open(os.getcwd() + "/" + "token_store.txt",
-                            "r",
-                            encoding="utf-8").readline()
-        return access_token.strip()[1:]
-
     def get_json(self, url: str, method: str, params: dict = None):
         """Function retrieves JSON description of object specified by
         argument values."""
@@ -46,7 +39,7 @@ class VKSource(Source):
         self.v = v
         self.access_token = access_token
         if not self.access_token:
-            self.access_token = self.read_token()
+            self.access_token = os.getenv("ACCESS_TOKEN")
 
         # Initialize dict to store statistics for posts, likes etc.
         self.totals = {
