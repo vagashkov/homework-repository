@@ -5,8 +5,9 @@ import time
 from datetime import datetime
 
 import requests
-from posts.vk import VKPost
-from sources._base import Source
+
+from ._base import Source
+from .posts.vk import VKPost
 
 
 class VKSource(Source):
@@ -232,7 +233,6 @@ class VKSource(Source):
         tables = ""
         for statistic in statistics.keys():
             cur_stat = statistics[statistic]
-            print(cur_stat)
             table = f"<p><table border='1'><tr><th>{statistic}</th>"
             table += "<th>Number</th></tr>"
             for key in cur_stat.keys():

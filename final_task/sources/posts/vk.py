@@ -3,7 +3,8 @@ import os
 import time
 
 import requests
-from posts._base import Post
+
+from ._base import Post
 
 
 class VKPost(Post):
