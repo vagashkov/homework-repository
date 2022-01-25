@@ -71,7 +71,9 @@ class VKSource(Source):
                 self.totals["posts"] = response["count"]
         else:
             # Raise an exception if something went wrong
-            pass
+            if "error" in response:
+                error_text = response["error"]["error_msg"]
+                raise ValueError(error_text)
 
     def update_posts_statistics(self, post_date):
         """Function updates VKSource object posts statistics
