@@ -1,10 +1,36 @@
 ﻿# -*- coding: utf-8 -*-
 import os
 
-from app import app
-from app.forms import WallGrabForm
-from flask import redirect, render_template, send_file, session, url_for
+from flask import Flask, redirect, render_template, send_file, session, url_for
+from flask_wtf import FlaskForm
 from sources.vk import VKSource
+from wtforms import DateField, SelectMultipleField, StringField, SubmitField
+from wtforms.validators import DataRequired, Optional
+
+
+class Config(object):
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN') or '123'
+
+
+app = Flask(__name__)
+app.config.from_object(Config)
+
+
+def create_app():
+    return app
+
+
+class WallGrabForm(FlaskForm):
+    """Input form for wall report parameters."""
+    choices = VKSource.available_fields
+    owner_id = StringField(label="Owner ID *", validators=[DataRequired()])
+    fields_list = SelectMultipleField(label="Fields *",
+                                      default=choices,
+                                      choices=choices,
+                                      validators=[DataRequired()])
+    start_date = DateField(label="Start Date", validators=[Optional()])
+    submit = SubmitField('Grab it')
 
 
 @app.route('/', methods=['GET', 'POST'])
