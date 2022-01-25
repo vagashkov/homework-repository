@@ -24,6 +24,7 @@ def create_app():
 class WallGrabForm(FlaskForm):
     """Input form for wall report parameters."""
     choices = VKSource.available_fields
+    access_token = StringField(label="Access Token", validators=[Optional()])
     owner_id = StringField(label="Owner ID *", validators=[DataRequired()])
     fields_list = SelectMultipleField(label="Fields *",
                                       default=choices,
@@ -40,6 +41,7 @@ def index():
     form = WallGrabForm()
     if form.validate_on_submit():
         # Get report parameters from form
+        access_token = form.access_token.data
         owner_id = form.owner_id.data
         start_date = form.start_date.data
         fields_list = form.fields_list.data
@@ -47,7 +49,13 @@ def index():
 
         # Build new VKSource object for specified wall
         try:
-            vk_source = VKSource(owner_id, start_date, fields_list=fields_list)
+            if access_token:
+                vk_source = VKSource(owner_id, start_date,
+                                     fields_list=fields_list,
+                                     access_token=access_token)
+            else:
+                vk_source = VKSource(owner_id, start_date,
+                                     fields_list=fields_list)
         except ValueError as error_object:
             # Somethinf went wrong - show error page
             session["error_message"] = str(error_object)
