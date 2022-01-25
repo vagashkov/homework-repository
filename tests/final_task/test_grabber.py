@@ -1,7 +1,6 @@
 ﻿import os
 import sys
 
-
 from final_task.sources.vk import VKSource
 
 
@@ -38,7 +37,7 @@ def test_front_page():
     sys.path.insert(0, os.getcwd() + "/final_task")
 
     # Create Flask app object
-    from final_task.app import create_app # noqa
+    from final_task.app import create_app  # noqa
     app = create_app()
     app.testing = True
 
