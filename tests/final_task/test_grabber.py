@@ -41,7 +41,7 @@ def test_front_page():
     app = create_app()
     app.testing = True
 
-    # Check if index page is accessible
+    # Check if start page is accessible
     test_client = app.test_client()
     response = test_client.get("/index")
     assert response.status_code == 200
