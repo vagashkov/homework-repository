@@ -20,7 +20,7 @@ On results page click "Statistics" button in order to show/hide statistics table
 ## Project setup
 0. You need Docker Composer to be installed.
 1. Download repository content
-2. Navigate to homework-repository folder.
+2. Navigate to final_task folder.
 3. Enter the command below
 
 ```
