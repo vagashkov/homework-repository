@@ -19,10 +19,16 @@ class VKSource(Source):
     API_VERSION = os.getenv("VK_API_VERSION")
     if not API_VERSION:
         API_VERSION = "5.131"
+
     # Minimum time between request to avoid locking
     PAUSE_LENGTH = os.getenv("VK_PAUSE_LENGTH")
     if not PAUSE_LENGTH:
         PAUSE_LENGTH = 0.4
+
+    # Maximum number of posts in single response
+    MAX_RESULTS = os.getenv("VK_MAX_RESULTS")
+    if not MAX_RESULTS or MAX_RESULTS > 100:
+        MAX_RESULTS = 100
 
     available_fields = ["id", "text", "attachments", "attachments_count",
                         "likes_count", "reposts_count", "comments_count"]
@@ -80,14 +86,15 @@ class VKSource(Source):
 
         # Raise an exception if something went wrong
         if "error" in response:
-            error_text = response["error"]["error_msg"]
+            response = response.get("error", {})
+            error_text = response.get("error_msg", "Unknown error")
             raise ValueError(error_text)
 
         if "response" in response:
             response = response["response"]
             # Now check number of results
             if "count" in response:
-                self.totals["all_posts"] = response["count"]
+                self.totals["all_posts"] = response.get("count", 0)
                 # No available posts on the wall (at all)
                 if not self.totals["all_posts"]:
                     raise ZeroPostsException
@@ -131,7 +138,7 @@ class VKSource(Source):
         # Setting initial parameters
         after_start_date = True
         post_counter = 0
-        self.params["count"] = 100
+        self.params["count"] = self.MAX_RESULTS
         # Create and fill CSV file for report
         with open(file_name, "w") as file:
             # Create writer object for opened file
@@ -151,11 +158,11 @@ class VKSource(Source):
                                              self.method,
                                              self.params)
                 # And list of its post objects
-                posts = page_content["response"]["items"]
+                posts = page_content.get("response", {}).get("items", [])
                 for post_description in posts:
                     # Check if start date is defined
                     if self.start_date:
-                        date_desc = post_description["date"]
+                        date_desc = post_description.get("date", "")
                         post_date = datetime.fromtimestamp(date_desc).date()
                         if post_date < self.start_date:
                             after_start_date = False
