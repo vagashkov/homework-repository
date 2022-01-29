@@ -9,10 +9,21 @@ from ._base import Post
 
 class VKPost(Post):
     """Class describes data and behaviour of single VK post."""
+
+    # Define some 'constants' for current source:
+    # Current API version
+    API_VERSION = os.getenv("VK_API_VERSION")
+    if not API_VERSION:
+        API_VERSION = "5.131"
+    # Minimum time between request to avoid locking
+    PAUSE_LENGTH = os.getenv("VK_PAUSE_LENGTH")
+    if not PAUSE_LENGTH:
+        PAUSE_LENGTH = 0.4
+
     # URL components for GET request.
     base_url = "https://api.vk.com/method/"
     method = "video.get"
-    params = {"v": "5.131"}
+    params = {"v": API_VERSION}
 
     def get_json(self, url: str, method: str, params: dict = None):
         """Function retrieves JSON description of object specified by
@@ -52,7 +63,7 @@ class VKPost(Post):
         return "Event " + str(event_desc["id"])
 
     def get_video_url(self, video_desc: str) -> str:
-        time.sleep(0.3)
+        time.sleep(self.PAUSE_LENGTH)
         params = {}
         params["v"] = self.params["v"]
         params["videos"] = "_".join((str(video_desc["owner_id"]),

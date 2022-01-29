@@ -3,6 +3,7 @@ import os
 
 from flask import Flask, redirect, render_template, send_file, session, url_for
 from flask_wtf import FlaskForm
+from sources.exceptions.no_posts import ZeroPostsException
 from sources.vk import VKSource
 from wtforms import DateField, SelectMultipleField, StringField, SubmitField
 from wtforms.validators import DataRequired, Optional
@@ -38,7 +39,12 @@ class WallGrabForm(FlaskForm):
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     """Function serves index page usage."""
+    session["posts_table"] = ""
+    session["details_table"] = ""
+    session["csv_file"] = ""
+    session["error_message"] = ""
     form = WallGrabForm()
+
     if form.validate_on_submit():
         # Get report parameters from form
         access_token = form.access_token.data
@@ -56,20 +62,35 @@ def index():
             else:
                 vk_source = VKSource(owner_id, start_date,
                                      fields_list=fields_list)
+        except ZeroPostsException:
+            # We have got no posts - lets inform user
+            return redirect(url_for('empty'))
         except ValueError as error_object:
-            # Somethinf went wrong - show error page
+            # Something went wrong - show error page
             session["error_message"] = str(error_object)
             return redirect(url_for('error'))
 
         # Create CSV-based description of the wall
         # and store  CSV file name in session parameters
-        csv_file = cwd + f"/{owner_id}" + ".csv"
-        vk_source.process_wall_content(csv_file)
+        csv_file = f"{cwd}/{owner_id}.csv"
+
+        # Process wall and check once again for posts number
+        if not vk_source.process_wall_content(csv_file):
+            return redirect(url_for('empty'))
+
+        # We got some posts - can process data further
         session["csv_file"] = csv_file
 
         # Build statistics for posts and store it into session parameters
+        posts_table = vk_source.get_posts_statistics_html()
+        session["posts_table"] = posts_table
+
+        # Build statistics for post-related objects (likes, reposts, comments)
+        # and store it into session parameters
         details_table = vk_source.get_other_statistics_html()
         session["details_table"] = details_table
+
+        # Finally redirect user to results page
         return redirect(url_for('results'))
     return render_template('index.html',
                            title='Simple Wall Grabber', form=form)
@@ -92,6 +113,12 @@ def return_files():
         return send_file(csv_file, attachment_filename="Wall report")
     except Exception as e:
         return str(e)
+
+
+@app.route('/empty')
+def empty():
+    """Function generates 'no posts' page."""
+    return render_template("empty.html")
 
 
 @app.route('/error')
