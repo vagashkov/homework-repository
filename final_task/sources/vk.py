@@ -182,9 +182,15 @@ class VKSource(Source):
 
     def get_posts_statistics_html(self):
         """Function puts posts statistics into HTML table."""
+        weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday",
+                    "Thursday", "Friday", "Saturday"]
+        posts_by_weekdays = []
+        for (day_number, posts) in sorted(self.posts_by_weekday.items()):
+            posts_by_weekdays.append((weekdays[int(day_number)], posts))
+
         posts_statistics = {"Year": sorted(self.posts_by_year.items()),
                             "Month": sorted(self.posts_by_month.items()),
-                            "Weekday": sorted(self.posts_by_weekday.items()),
+                            "Weekday": posts_by_weekdays,
                             "Hour": sorted(self.posts_by_hour.items())}
         tables = ""
         for statistic in posts_statistics:

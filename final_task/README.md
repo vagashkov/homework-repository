@@ -37,7 +37,6 @@ docker-compose up
 
 ## Future scope
 
-- Add more versatile error implementation.
-- Make weekdays statistics human-readable.
-- Create Utils class for common functions (getJSON etc).
-- Add obligatory fields control in Source abstract class __init__ method.
+- Add more versatile errors processing;
+- Create Utils class for common functions (getJSON etc);
+- Add required fields control in Source abstract class __init__ method.
