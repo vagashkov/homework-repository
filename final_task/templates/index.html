@@ -6,6 +6,7 @@
         {{ form.hidden_tag() }}
         <p>
             {{ form.access_token.label }}<br>
+            (follow README.md for instructions)
             {{ form.access_token(size=24) }}<br>
             {% for error in form.access_token.errors %}
             <span style="color: red;">[{{ error }}]</span>
@@ -13,6 +14,7 @@
         </p>
         <p>
             {{ form.owner_id.label }}<br>
+            (an integer value that represents user or community id)<br>
             {{ form.owner_id(size=12) }}<br>
             {% for error in form.owner_id.errors %}
             <span style="color: red;">[{{ error }}]</span>

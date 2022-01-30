@@ -6,7 +6,14 @@ WallGrabber is a simple VK-only (for now) wall information parser implemented us
 
 ## How to use
 Fill the form on index page:
-- Your access token (read [here](https://dev.vk.com/api/access-token/getting-started) how to obtain it) 
+- Your access token (you can read [here](https://vk.com/dev/implicit_flow_user) how to obtain it or follow the steps below)
+    - navigate to [Application Management](https://vk.com/apps?act=manage) page and create your own VK application;
+    - open its settings in order to obtain its ID and insure by the way that it is up and running;
+    - follow link like oauth.vk.com/authorize?client_id=8055328&display=page&redirect_uri=http://vk.com/callback&scope=photos,video,offline,albums,polls&response_type=token&v=5.131&state=123456 
+       (just substitute your application ID from previous step into client_id parameter);
+    - you will be prompted for access confirmation and after that you will be redirected to another page
+       (like https://api.vk.com/blank.html...)
+    - copy its access_token parameter and use it in WallGrabber (but remember: never EVER share it with someone else).
 - Owner ID (required field)
 - mark fields to export (or leave all selected by default) - also required field
 - select export start date (or leave field empty and get the whole wall)
